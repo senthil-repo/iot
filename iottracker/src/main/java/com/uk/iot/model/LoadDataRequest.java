@@ -6,6 +6,11 @@ package com.uk.iot.model;
 public class LoadDataRequest {
     private String filePath;
 
+    public LoadDataRequest() {}
+    public LoadDataRequest(String filePath) {
+        super();
+        this.filePath = filePath;
+    }
     public String getFilePath() {
         return filePath;
     }

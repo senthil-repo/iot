@@ -4,10 +4,11 @@ import com.uk.iot.cache.IOTDeviceCache;
 import com.uk.iot.model.IOTDevice;
 import com.uk.iot.model.Result;
 import com.uk.iot.util.ResultBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
 import java.io.*;
-import java.sql.Timestamp;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +17,20 @@ import java.util.List;
  */
 public class DataLoader {
     public Result loadData(String fileLocation) {
-        fileLocation = "/Users/Appa/Downloads/data-2.csv"; // TODO - remove
-        //get the data from CSV file
         //return the result (success / error)
         return getData(fileLocation);
     }
 
     private Result getData(String fileLocation) {
-        File file = new File(fileLocation);
         int batchSize = 10; // TODO - move to a property
         boolean hasMoreLines = true;
         BufferedReader bufferedReader = null;
         ResultBuilder resultBuilder = new ResultBuilder();
         try{
+
+            if(StringUtils.isBlank(fileLocation))
+                throw new FileNotFoundException(" Invalid file ");
+            File file = new File(fileLocation.trim());
             bufferedReader = new BufferedReader(new FileReader(file));
             bufferedReader.readLine(); //skip the 1st (header) line
 
@@ -44,17 +46,15 @@ public class DataLoader {
                     hasMoreLines = false;
                 }
             }
-
             bufferedReader.close();
-
         } catch (FileNotFoundException e) {
             //e.printStackTrace();
-            return resultBuilder.buildDataLoadResult(HttpStatus.NOT_FOUND, "ERROR: no data file found");
+            return resultBuilder.buildGenericResult(HttpStatus.NOT_FOUND, "ERROR: no data file found");
         } catch (Exception e) {
             //TODO - need to add more details
-            return resultBuilder.buildDataLoadResult(HttpStatus.NOT_FOUND, "ERROR: A technical exception occurred");
+            return resultBuilder.buildGenericResult(HttpStatus.INTERNAL_SERVER_ERROR, "ERROR: A technical exception occurred");
         }
-        return resultBuilder.buildDataLoadResult(HttpStatus.OK, "data refreshed");
+        return resultBuilder.buildGenericResult(HttpStatus.OK, "data refreshed");
     }
 
     private List<IOTDevice> readBatchData(BufferedReader bufferedReader, int batchSize) throws IOException {
@@ -74,7 +74,7 @@ public class DataLoader {
 
     private IOTDevice getIOTDevice(String tokens[]) {
         IOTDevice iotDevice = new IOTDevice();
-        iotDevice.setDateTime(Timestamp.valueOf(tokens[0]));
+        iotDevice.setDateTime(new BigDecimal(tokens[0]).toBigInteger());
         iotDevice.setEventID(Integer.valueOf(tokens[1]));
         iotDevice.setProductID(tokens[2]);
         iotDevice.setLatitude(tokens[3]);
@@ -86,8 +86,4 @@ public class DataLoader {
         return iotDevice;
 
     }
-
-/*    public static void main(String[] args) {
-        loadData("");
-    }*/
 }

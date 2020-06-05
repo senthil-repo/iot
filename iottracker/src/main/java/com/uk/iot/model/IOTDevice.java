@@ -1,16 +1,14 @@
 package com.uk.iot.model;
 
-import lombok.Data;
 
-import java.sql.Timestamp;
-
+import java.math.BigInteger;
 
 /**
  * Created by Senthil on 03/06/2020.
  */
 //@Data
 public class IOTDevice {
-    private Timestamp dateTime;
+    private BigInteger dateTime;
     private int eventID;
     private String productID;
     private String latitude;
@@ -19,11 +17,11 @@ public class IOTDevice {
     private String light;
     private String airPlaneMode;
 
-    public Timestamp getDateTime() {
+    public BigInteger getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Timestamp dateTime) {
+    public void setDateTime(BigInteger dateTime) {
         this.dateTime = dateTime;
     }
 

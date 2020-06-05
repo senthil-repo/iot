@@ -7,8 +7,8 @@ public class Body {
     private String id;
     private String name;
     private String datetime;
-    private String ong;
-    private String lat;
+    private String longitude;
+    private String latitude;
     private String status;
     private String battery;
     private String description;
@@ -37,20 +37,20 @@ public class Body {
         this.datetime = datetime;
     }
 
-    public String getOng() {
-        return ong;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setOng(String ong) {
-        this.ong = ong;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getLat() {
-        return lat;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLat(String lat) {
-        this.lat = lat;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getStatus() {

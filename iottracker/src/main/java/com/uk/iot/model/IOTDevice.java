@@ -65,10 +65,6 @@ public class IOTDevice {
         this.battery = battery;
     }
 
-    public String getLight() {
-        return light;
-    }
-
     public void setLight(String light) {
         this.light = light;
     }

@@ -1,40 +1,29 @@
 package com.uk.iot.cache;
 
 import com.uk.iot.model.IOTDevice;
+import org.springframework.util.CollectionUtils;
 
-import java.io.*;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.TreeMap;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Senthil on 03/06/2020.
+ * Cache class to hold the IOT device and location details
  */
 public class IOTDeviceCache {
-
-    //private static Map<String, List<IOTDevice>> iotDeviceMap = null;
     private static Map<String, Map<BigInteger, IOTDevice>> iotDeviceMap = null;
 
     public IOTDeviceCache() {
         iotDeviceMap = new HashMap<>();
     }
 
-/*    public static void loadData(List<IOTDevice> iotDeviceList) {
-        if(iotDeviceList.isEmpty())
-            return;
-
-        for(IOTDevice iotDevice : iotDeviceList) {
-            List<IOTDevice> deviceListOfAProduct = iotDeviceMap.get(iotDevice.getProductID());
-            if(deviceListOfAProduct != null) {
-                deviceListOfAProduct.add(iotDevice);
-            } else {
-                deviceListOfAProduct = new ArrayList<>();
-                deviceListOfAProduct.add(iotDevice);
-                iotDeviceMap.put(iotDevice.getProductID(), deviceListOfAProduct);
-            }
-        }
-    }*/
-
+    /**
+     * Method to load the IOT device details in in-memory dataset (hashmap)
+     * @param iotDeviceList
+     */
     public static void loadData(List<IOTDevice> iotDeviceList) {
         if(iotDeviceList.isEmpty())
             return;
@@ -51,11 +40,15 @@ public class IOTDeviceCache {
         }
     }
 
-    public static Map<String, Map<BigInteger, IOTDevice>> getIOTDevices() {
-        return iotDeviceMap; //TODO
+    /**
+     * Method to get the map of IOT devices for the respective productId
+     * @param productId
+     * @return
+     */
+    public static Map<BigInteger, IOTDevice> getDevicesForProduct(String productId) {
+        return (!CollectionUtils.isEmpty(iotDeviceMap)
+                && !CollectionUtils.isEmpty(iotDeviceMap.get(productId))
+                && !iotDeviceMap.get(productId).isEmpty() ? iotDeviceMap.get(productId) : null);
     }
 
-    public static Map<BigInteger, IOTDevice> getDevicesForProduct(String productId) {
-        return (!iotDeviceMap.get(productId).isEmpty() ? iotDeviceMap.get(productId) : null);
-    }
 }

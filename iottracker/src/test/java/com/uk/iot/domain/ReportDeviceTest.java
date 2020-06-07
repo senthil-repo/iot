@@ -137,7 +137,7 @@ public class ReportDeviceTest {
     @Test
     public void testGetDeviceLocation_DynamicActivity_Tracker_NotApplicable() {
         when(iotDeviceCache.getDevicesForProduct("WG11155800")).
-                thenReturn(getDeviceMapForCycleTracker());
+                thenReturn(getCycleTracker_DynamicActivity_Records());
         DeviceLocationResult deviceLocationResult =  reportDevice.getDeviceLocation("WG11155800", "1582605437000");
         assertNotNull(" Something wrong ", deviceLocationResult);
         assertEquals(" Unexpected device status ", "N/A", deviceLocationResult.getDeviceLocationDetails().getStatus());
@@ -181,7 +181,6 @@ public class ReportDeviceTest {
         records.add("1582605197000,10003,WG11155638,51.5185,-0.1736,0.98,OFF,OFF");
         records.add("1582605257000,10004,WG11155638,51.5185,-0.1736,0.98,OFF,OFF");
 
-        records.add("1582605437000,10004,WG11155800,11.5185,-0.1736,0.98,OFF,OFF");
         return records;
     }
 
@@ -195,5 +194,17 @@ public class ReportDeviceTest {
         records.add("1582612875000,10014,6900233111,,,0.1,N/A,OFF");
 
         return records;
+    }
+
+    private Map<BigInteger, IOTDevice> getCycleTracker_DynamicActivity_Records() {
+        List<String> records = new ArrayList<>();
+        records.add("1582605437000,10004,WG11155800,11.5185,-0.1736,0.98,OFF,OFF");
+        records.add("1582605437001,10004,WG11155800,11.5185,-0.1736,0.98,OFF,OFF");
+
+        List<IOTDevice> iotDeviceList = records.stream().map(s -> getIotDevice(s)).collect(Collectors.toList());
+        Map<BigInteger, IOTDevice> deviceMap = iotDeviceList.stream().
+                collect(Collectors.toMap(IOTDevice::getDateTime,  iotDevice -> iotDevice));
+
+        return deviceMap;
     }
 }

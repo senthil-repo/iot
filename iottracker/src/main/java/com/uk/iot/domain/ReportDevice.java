@@ -10,7 +10,9 @@ import com.uk.iot.util.ResultBuilder;
 
 import java.math.BigInteger;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -69,23 +71,26 @@ public class ReportDevice {
 
     /**
      * Method to check the dynamic activity status of CycleTracker customers. If the last 3 consecutive sets of
-     * locations are same (i.e the longitude & latitude details are same), then the overall status of the device is 'Inactive'.
-     * If there are not much details available, then the status will be 'Not Applicable (N/A)'.
+     * locations are same (i.e the longitude & latitude details are same), then the overall status of the device will be 'Inactive'.
+     * If there are not much details available (say if number of records is less than 3), then the status will be 'Not Applicable (N/A)'.
+     * Otherwise (say the longitude & latitude doesn't match for 3 consecutive sets), the status will remain as it is.
      * @param deviceLocationResult
      * @param deviceMap
      * @param timeStamp
      */
     private void getDynamicActivityStatus(Body deviceLocationResult, Map<BigInteger, IOTDevice> deviceMap, BigInteger timeStamp) {
-        deviceMap = deviceMap.entrySet().stream().filter(entry -> entry.getKey().intValue() <= timeStamp.intValue()
+        if(deviceMap.size() < 3) {
+            deviceLocationResult.setStatus(StatusEnum.NOT_APPLICABLE.getStatus());
+            return;
+        }
+        Map<BigInteger, IOTDevice> newDeviceMap = new TreeMap<>(Collections.reverseOrder());
+        newDeviceMap.putAll(deviceMap);
+        newDeviceMap = newDeviceMap.entrySet().stream().filter(entry -> entry.getKey().intValue() <= timeStamp.intValue()
                 && entry.getValue().getLatitude().equalsIgnoreCase(deviceLocationResult.getLatitude())
                 && entry.getValue().getLongitude().equalsIgnoreCase(deviceLocationResult.getLongitude()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        if(deviceMap.size() < 3 ) {
-            deviceLocationResult.setStatus(StatusEnum.NOT_APPLICABLE.getStatus());
-        } else {
+        if(newDeviceMap.size() >= 3 )
             deviceLocationResult.setStatus(StatusEnum.INACTIVE.getStatus());
-        }
-
     }
 }

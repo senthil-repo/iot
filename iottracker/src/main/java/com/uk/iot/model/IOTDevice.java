@@ -6,7 +6,6 @@ import java.math.BigInteger;
 /**
  * Created by Senthil on 03/06/2020.
  */
-//@Data
 public class IOTDevice {
     private BigInteger dateTime;
     private int eventID;

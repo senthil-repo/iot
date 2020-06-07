@@ -10,16 +10,18 @@ https://github.com/senthil-repo/iot.git
 	mvn clean install
 	
 3) Run the application & start the service: Go to the folder '/iot/iottracker/target/', and run the following command
+Note: If you are running any other applications underport 8090, please change the port below.
 	java -jar -Dserver.port=8090 iot-tracker-1.0.jar
 
-4) Place data.csv file under any location and keep a note of the full path. You would need to supply that in the HTTP post body while running the 'Data Load' service
-
-5) There are 2 services that the application provides.
+4) There are 2 services that the application provides.
 Go to the following URL to get the swagger documentation which will give you more details about invoking the services.
 
 http://localhost:8090/swagger-ui.html
 
-6) Other useful information:
+5) Other useful information:
+ Place the data.csv file under any location and keep a note of the full path. You would need to supply that in the HTTP post body while running the 'Service 1 (i.e) Data Load' service. (Please check the sample file 'data-sample.csv' added next to README.md file)
+ Note: The first row of the 'data.csv' should be the column names, followed with other records.
+
 - To run the 1st service, please use the following URL and supply the filePath in the HTTP POST body field.
 URL - http://localhost:8090/iot/event/v1
 Body - C:\Users\XXXX\Desktop\data.csv

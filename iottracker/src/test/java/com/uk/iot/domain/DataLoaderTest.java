@@ -1,11 +1,7 @@
 package com.uk.iot.domain;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.uk.iot.cache.IOTDeviceCache;
 import com.uk.iot.model.Body;
 import com.uk.iot.model.Result;
-import net.bytebuddy.implementation.bytecode.Addition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,7 +105,7 @@ public class DataLoaderTest {
 
     private Result getExpected_GeneralException_Result(){
         Body body = new Body();
-        body.setDescription("ERROR: A technical exception occurred");
+        body.setDescription("ERROR: A technical exception occurred. Once the issue is resolved, please reload the data.");
         return new Result("500 Internal Server Error", body);
     }
 }

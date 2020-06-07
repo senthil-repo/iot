@@ -60,7 +60,8 @@ public class DataLoader {
             return resultBuilder.buildGenericResult(HttpStatus.NOT_FOUND, "ERROR: no data file found");
         } catch (Exception e) {
             logger.error(" ****** A technical exception occured, please contact system admin **** " + e.getMessage());
-            return resultBuilder.buildGenericResult(HttpStatus.INTERNAL_SERVER_ERROR, "ERROR: A technical exception occurred");
+            return resultBuilder.buildGenericResult(HttpStatus.INTERNAL_SERVER_ERROR, "ERROR: A technical exception occurred. Please contact system admin." +
+                    " Once the issue is resolved, please reload the data.");
         }
         logger.info(" ***** Successfully loaded the data ***** ");
         return resultBuilder.buildGenericResult(HttpStatus.OK, "data refreshed");

@@ -25,4 +25,4 @@ http://localhost:8090/swagger-ui.html
 - To run the 1st service, please use the following URL and supply the filePath in the HTTP POST body field.
 URL - http://localhost:8090/iot/event/v1
 Body - C:\Users\XXXX\Desktop\data.csv
-- To run the 2nd service, please supply the following (sample) parameter in the HTTP GET request
+
